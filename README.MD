@@ -6,7 +6,9 @@
 
 ### <h1 align="center">Python</h1>
 
-![gifs-de-cobras-1](https://github.com/Tiagotjp/missao-certificacao-mundo1/assets/132152335/d0c6a941-cb6e-497d-87a3-db4763ef4d1b)
+<div align="center">
+<img src="https://github.com/Tiagotjp/missao-certificacao-mundo1/assets/132152335/d0c6a941-cb6e-497d-87a3-db4763ef4d1b"width="500px" />
+</div>
 
 
 ### <h1 align="center">Descrição do Projeto 👨‍💻 </h1>
