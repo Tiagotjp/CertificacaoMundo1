@@ -1,4 +1,6 @@
-![estacio-logo-1536x390](https://github.com/Tiagotjp/missao-certificacao-mundo1/assets/132152335/a291030e-11e3-4bbb-9fa5-c59039f7dd40)
+<p align="center">
+<img width="1536x390" src="src/assets/to_readme/estacio-logo-1536x390.png">
+</p>
 
 </br>
 
