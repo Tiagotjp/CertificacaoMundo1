@@ -9,10 +9,10 @@ SENHA_LOGIN = "fullstack"
 
 # Dados simulados das tabelas
 usuarios = [
-    {"cpf": "11111111111", "nome": "João da Silva", "funcao": "Analista de Vendas"},
-    {"cpf": "22222222222", "nome": "Maria Santos", "funcao": "Gerente Financeiro"},
-    {"cpf": "33333333333", "nome": "Carlos Oliveira", "funcao": "Desenvolvedor"},
-    {"cpf": "44444444444", "nome": "Ana Rodrigues", "funcao": "Administrador de Banco de Dados"}
+    {"nome": "João da Silva", "cpf": "05486210564", "funcao": "Analista de Vendas"},
+    {"nome": "Maria Santos", "cpf": "02544856823", "funcao": "Gerente Financeiro"},
+    {"nome": "Carlos Oliveira", "cpf": "03645892340", "funcao": "Desenvolvedor"},
+    {"nome": "Ana Rodrigues", "cpf": "01574862354", "funcao": "Administrador de Banco de Dados"}
 ]
 
 perfis_acesso = [
@@ -68,21 +68,27 @@ def exibir_info():
 
 def adicionar_usuario():
     novo_usuario = entry_novo_usuario.get()
-    nova_funcao = entry_nova_funcao.get()
-    novo_cpf = entry_novo_cpf.get()
+    novo_cpf = entry_nova_cpf.get()
+    nova_funcao = entry_novo_funcao.get()
 
-    if novo_usuario and nova_funcao and novo_cpf:
-        usuarios.append({"cpf": novo_cpf, "nome": novo_usuario, "funcao": nova_funcao})
+    # Verifique se o CPF já existe em algum usuário existente
+    cpf_existente = next((usuario for usuario in usuarios if usuario["cpf"] == novo_cpf), None)
 
-        # Verifique os conflitos entre o novo usuário e os usuários existentes
-        for usuario in usuarios:
-            if usuario["cpf"] != novo_cpf:
-                adicionar_conflito_auto(novo_cpf, usuario["cpf"])  # Fornecendo ambos os CPFs
+    if novo_usuario and novo_cpf and nova_funcao:
+        if cpf_existente:
+            messagebox.showerror("Erro", f"CPF '{novo_cpf}' já está cadastrado.")
+        else:
+            usuarios.append({"nome": novo_usuario, "cpf": novo_cpf, "funcao": nova_funcao})
 
-        # Atualiza as tabelas
-        update_tables()
+            # Verifique os conflitos entre o novo usuário e os usuários existentes
+            for usuario in usuarios:
+                if usuario["cpf"] != novo_cpf:
+                    adicionar_conflito_auto(novo_cpf, usuario["cpf"])  # Fornecendo ambos os CPFs
 
-        messagebox.showinfo("Informação", f"Novo usuário '{novo_usuario}' adicionado com sucesso.")
+            # Atualiza as tabelas
+            update_tables()
+
+            messagebox.showinfo("Informação", f"Novo usuário '{novo_usuario}' adicionado com sucesso.")
     else:
         messagebox.showerror("Erro", "Por favor, preencha todos os campos.")
 
@@ -209,26 +215,7 @@ def verificar_conflitos():
                 sod["conflito"] = "Não"
 
 
-# Função para adicionar novo conflito (SoD)
-def adicionar_conflito():
-    cpf_1 = entry_cpf_1.get()
-    cpf_2 = entry_cpf_2.get()
-    conflito = entry_conflito.get()
 
-    # Verifica se os campos foram preenchidos
-    if cpf_1 and cpf_2 and conflito:
-        conflito_interesse.append({
-            "cpf_1": cpf_1,
-            "cpf_2": cpf_2,
-            "conflito": conflito
-        })
-
-        # Atualiza a tabela SoD
-        update_table_sod()
-
-        messagebox.showinfo("Informação", "Conflito adicionado com sucesso.")
-    else:
-        messagebox.showerror("Erro", "Por favor, preencha todos os campos.")
 
 # Função para excluir conflito selecionado
 
@@ -319,7 +306,7 @@ def update_table_usuarios():
     tree_usuarios.delete(*tree_usuarios.get_children())
     for usuario in usuarios:
         tree_usuarios.insert("", "end", values=(
-            usuario["cpf"], usuario["nome"], usuario["funcao"]))
+            usuario["nome"], usuario["cpf"], usuario["funcao"]))
 
 # Função para atualizar a tabela de perfis de acesso
 
@@ -362,28 +349,24 @@ imagem_fundo = imagem_fundo.resize((100, 100), Image.LANCZOS)
 imagem_fundo = ImageTk.PhotoImage(imagem_fundo)
 
 # Colocar a imagem de fundo em um Label
-label_fundo = tk.Label(root, image=imagem_fundo)
-label_fundo.place(x=-165, y=-30, relwidth=1, relheight=1)
+label_fundo = tk.Label(master=root, image=imagem_fundo)
+label_fundo.place(x=-130, y=-30, relwidth=1, relheight=1)
 
 # Página de login
 
 
-frame_login = ctk.CTkFrame(root)
+frame_login = ctk.CTkFrame(master=root)
 frame_login.pack(padx=100, pady=20)
 
-label_usuario = ctk.CTkLabel(frame_login, text="Usuário:")
-label_usuario.grid(row=0, column=0, padx=10, pady=5)
 
-entry_usuario = ctk.CTkEntry(frame_login)
+entry_usuario = ctk.CTkEntry(master=frame_login, placeholder_text="Usuário")
 entry_usuario.grid(row=0, column=1, padx=10, pady=5)
 
-label_senha = ctk.CTkLabel(frame_login, text="Senha:")
-label_senha.grid(row=1, column=0, padx=10, pady=5)
 
-entry_senha = ctk.CTkEntry(frame_login, show="*")
+entry_senha = ctk.CTkEntry(master=frame_login, placeholder_text="Senha", show="*")
 entry_senha.grid(row=1, column=1, padx=10, pady=5)
 
-btn_login = ctk.CTkButton(frame_login, text="Login", command=fazer_login)
+btn_login = ctk.CTkButton(master=frame_login, text="Login", command=fazer_login)
 btn_login.grid(row=2, column=0, columnspan=2, padx=10, pady=5)
 
 btn_info = ctk.CTkButton(frame_login, text="Info", command=exibir_info)
@@ -401,27 +384,22 @@ tab_usuarios = ctk.CTkFrame(notebook)
 notebook.add(tab_usuarios, text="Cadastro de Usuários")
 
 tree_usuarios = ttk.Treeview(tab_usuarios, columns=(
-    "cpf", "nome", "funcao"), show="headings")
-tree_usuarios.heading("cpf", text="CPF do Usuário")
+    "nome", "cpf", "funcao"), show="headings")
 tree_usuarios.heading("nome", text="Nome do Usuário")
+tree_usuarios.heading("cpf", text="CPF do Usuário")
 tree_usuarios.heading("funcao", text="Função")
 tree_usuarios.pack(padx=10, pady=5, expand=True, fill="both")
 
 # Entradas de texto e rótulos para adicionar novo usuário
-label_novo_usuario = ctk.CTkLabel(tab_usuarios, text="Nome do Usuário:")
-label_novo_usuario.pack(padx=10, pady=5)
-entry_novo_usuario = ctk.CTkEntry(tab_usuarios)
+
+entry_novo_usuario = ctk.CTkEntry(tab_usuarios, placeholder_text="Nome do Usuário")
 entry_novo_usuario.pack(padx=10, pady=5)
 
-label_nova_funcao = ctk.CTkLabel(tab_usuarios, text="Função:")
-label_nova_funcao.pack(padx=10, pady=5)
-entry_nova_funcao = ctk.CTkEntry(tab_usuarios)
-entry_nova_funcao.pack(padx=10, pady=5)
+entry_nova_cpf = ctk.CTkEntry(tab_usuarios, placeholder_text="CPF do Usuário")
+entry_nova_cpf.pack(padx=10, pady=5)
 
-label_novo_cpf = ctk.CTkLabel(tab_usuarios, text="CPF:")
-label_novo_cpf.pack(padx=10, pady=5)
-entry_novo_cpf = ctk.CTkEntry(tab_usuarios)
-entry_novo_cpf.pack(padx=10, pady=5)
+entry_novo_funcao = ctk.CTkEntry(tab_usuarios, placeholder_text="Função")
+entry_novo_funcao.pack(padx=10, pady=5)
 
 btn_adicionar_usuario = ctk.CTkButton(
     tab_usuarios, text="Adicionar Usuário", command=adicionar_usuario)
@@ -443,7 +421,7 @@ tree_perfis.heading("descricao", text="Descrição do Perfil")
 tree_perfis.pack(padx=10, pady=5, expand=True, fill="both")
 
 # Entrada de texto para adicionar novo perfil
-entry_novo_perfil = ctk.CTkEntry(tab_perfis)
+entry_novo_perfil = ctk.CTkEntry(tab_perfis, placeholder_text="Cadastre o Perfil")
 entry_novo_perfil.pack(padx=10, pady=5)
 
 btn_adicionar_perfil = ctk.CTkButton(
@@ -465,7 +443,7 @@ tree_sistemas.heading("nome_sistema", text="Nome do Sistema")
 tree_sistemas.pack(padx=10, pady=5, expand=True, fill="both")
 
 # Entrada de texto para adicionar novo sistema
-entry_novo_sistema = ctk.CTkEntry(tab_sistemas)
+entry_novo_sistema = ctk.CTkEntry(tab_sistemas, placeholder_text="Cadastre o Sistema")
 entry_novo_sistema.pack(padx=10, pady=5)
 
 btn_adicionar_sistema = ctk.CTkButton(
@@ -493,25 +471,12 @@ tree_sod.heading("cpf_2", text="CPF 2")
 tree_sod.heading("conflito", text="Conflito")
 tree_sod.pack(padx=10, pady=5, expand=True, fill="both")
 
-# Entradas de texto e rótulos para adicionar novo conflito
-label_cpf_1 = ctk.CTkLabel(tab_sod, text="CPF 1:")
-label_cpf_1.pack(padx=10, pady=5)
-entry_cpf_1 = ctk.CTkEntry(tab_sod)
-entry_cpf_1.pack(padx=10, pady=5)
+def exibir_matriz_de_conflitos():
+    # ... Seu código para exibir a aba ...
 
-label_cpf_2 = ctk.CTkLabel(tab_sod, text="CPF 2:")
-label_cpf_2.pack(padx=10, pady=5)
-entry_cpf_2 = ctk.CTkEntry(tab_sod)
-entry_cpf_2.pack(padx=10, pady=5)
+    # Chama a função para verificar conflitos automaticamente
+    verificar_conflitos()
 
-label_conflito = ctk.CTkLabel(tab_sod, text="Conflito:")
-label_conflito.pack(padx=10, pady=5)
-entry_conflito = ctk.CTkEntry(tab_sod)
-entry_conflito.pack(padx=10, pady=5)
-
-btn_adicionar_conflito = ctk.CTkButton(
-    tab_sod, text="Adicionar Conflito", command=adicionar_conflito)
-btn_adicionar_conflito.pack(padx=10, pady=5)
 
 # Atualiza as tabelas na página principal
 update_tables()
@@ -521,4 +486,3 @@ frame_login.pack()
 
 # Iniciar loop da aplicação
 root.mainloop()
-
