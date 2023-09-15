@@ -54,7 +54,9 @@ Neste Projeto iremos utilizar a estrutura MVC (Model, View, Controller),como foi
 
 📌 [CustomTkinter](https://pypi.org/project/customtkinter/0.3/)
 
-📌[CTkMessagebox]()
+📌[CTkMessagebox](https://docs.python.org/3/library/tkinter.messagebox.html)
+
+📌[pillow import image](https://www.tutorialspoint.com/python_pillow/python_pillow_using_image_module.htm)
 
 <h1 align="center"> Executando o Programa</h1>
 
