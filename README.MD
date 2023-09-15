@@ -72,7 +72,7 @@ Neste Projeto iremos utilizar a estrutura MVC (Model, View, Controller),como foi
 
 
 ### <h2> 2° Clone do Repositório: </h2>
-https://github.com/Tiagotjp/CertificacaoMundo1/blob/main/Oficial.py
+https://github.com/Tiagotjp/CertificacaoMundo1
 
 
 ### - <h2> 3° Instale as Seguintes Bibliotecas: </h2></br>
