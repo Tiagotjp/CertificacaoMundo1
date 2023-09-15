@@ -89,6 +89,10 @@ sudo apt-get install python3-pil python3-pil.imagetk
 python -m pip install customtkinter CTkMessagebox
 </br>
 
+python -m pip install pillow
+</br>
+
+
 ### <h1>link do video referente ao programa</h1></br>
 [![yutube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)]()
 
