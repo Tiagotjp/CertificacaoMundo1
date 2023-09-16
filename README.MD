@@ -108,7 +108,7 @@ python -m pip install pillow
 
 🔶 202305450556 [LUKAS CAUÃ OLIVEIRA XAVIER]()
 
-🔶 202304554749 [MARILENE GOMES DUARTE]()
+🔶 202304554749 [MARILENE GOMES DUARTE](https://github.com/mari-lene/mari-lene)
 
 🔶 202306189045[TIAGO DE JESUS PEREIRA FURTADO](https://github.com/Tiagotjp)
 </div>
