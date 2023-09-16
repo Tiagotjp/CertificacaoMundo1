@@ -94,7 +94,7 @@ python -m pip install pillow
 
 
 ### <h1>link do video referente ao programa</h1></br>
-[![yutube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)]()
+[![yutube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=2GcjkK2-88Y)
 
 </br>
 
